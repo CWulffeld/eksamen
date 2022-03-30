@@ -1,8 +1,11 @@
+<?php
+session_start();
+  ?>
 <!DOCTYPE html>
 <!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/login.php --->
 <?php
 
-session_start();
+
 require_once '/home/mir/lib/db.php';
 
 $inputUid = $_POST['uid']; //uid
@@ -23,7 +26,7 @@ if (isset($_POST['uid']) && isset($_POST['password'])) {
       header('Location:forside.php');
     exit;
   } else  {
-    echo "Prøv igen";
+    $tjek = true;
 
   }
 
@@ -52,10 +55,20 @@ if (isset($_POST['uid']) && isset($_POST['password'])) {
   <body>
 
 
-
       <div class="container mt-5"> <!-- MB bestemmer margin top -->
         <div class="row">
+
           <div class="col-sm-6"> <!-- Bestemmer hvor containeren skal slutte. Slutter 6 ud af 12 -->
+            <?php
+        if ($tjek == true){
+            echo <<<END
+             <div class="alert alert-danger" role="alert">
+             Brugernavn og adgangskode er ikke korrekt
+           </div>
+END;
+
+         }
+             ?>
                 <form  action="" method="post">
                   <h2> Login </h2>
             <div class="mb-3"> <!-- MB bestemmer margin bund -->
