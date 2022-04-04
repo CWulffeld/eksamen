@@ -2,7 +2,10 @@
 session_start();
   ?>
 <!DOCTYPE html>
-<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/login.php --->
+<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/login.php
+Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
+
+--->
 <?php
 
 
@@ -54,11 +57,17 @@ if (isset($_POST['uid']) && isset($_POST['password'])) {
   </head>
   <body>
 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand">Blog</a>
+      </div>
+    </nav>
+
 
       <div class="container mt-5"> <!-- MB bestemmer margin top -->
         <div class="row">
 
-          <div class="col-sm-6"> <!-- Bestemmer hvor containeren skal slutte. Slutter 6 ud af 12 -->
+          <div class="col-md-6"> <!-- Bestemmer hvor containeren skal slutte. Slutter 6 ud af 12 -->
             <?php
         if ($tjek == true){
             echo <<<END
@@ -83,10 +92,10 @@ END;
                 <button type="submit" class="btn btn-primary">Login</button>
               </form>
             </div>
-
-
         </div>
-        <div class="col-sm-6">
+
+
+        <div class="col-md-6">
           <div class="mb-3 ">
             <h2>Ikke bruger endnu?</h2>
           <p>  Tilmeld dig her</p>
