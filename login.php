@@ -41,6 +41,7 @@ if (isset($_POST['uid']) && isset($_POST['password'])) {
 <html lang="en" dir="ltr">
   <head>
 
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,7 +49,7 @@ if (isset($_POST['uid']) && isset($_POST['password'])) {
     <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-
+        <link rel="stylesheet" href="stylesheet.css" />
 
 
 
@@ -59,7 +60,7 @@ if (isset($_POST['uid']) && isset($_POST['password'])) {
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand">Blog</a>
+        <a class="navbar-brand">WITS 2022</a>
       </div>
     </nav>
 

@@ -2,7 +2,7 @@
 session_start();
  ?>
 <!DOCTYPE html>
-<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/blogOpslag.php --->
+<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/seOpslag.php --->
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -73,79 +73,61 @@ session_start();
 
 
 
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-6">
+     <div class='container mt-5 mb-5'>
+       <div class='row'>
+           <div class= 'col-md-6'  >
+<h2>Se dit blog indlæg</h2>
 
-
-
-<form action='blogOpslag.php' method="post">
-
-  <h2>Du kan nu se og redigere dit opslag</h2>
-      <h5>Titel</h5>
-<div class="mb-3">
-  <input type="text" name="title" class="form-control"
-  <?php
-  echo " value='" . $getPost['title'] . "'>";
-  ?>
-</div>
-<div class="mb-3">
-  <h5>Indhold </h5>
- <textarea name="indhold" rows="10" cols="20" class="form-control">
-<?php
-  echo $getPost['content'];
-?>
-
-</textarea>
-
-</div>
-<div>
-<input type='hidden' name = 'pid'
-
-<?php
-       echo " value='" . $getPost['pid'] . "'>";
-?>
-
-</div>
 
 <div class="mb-3">
-  <button type="submit" name="submit"class="btn btn-primary">Rediger opslag</button>
-
-</div>
-
-     </form>
+  <div class="card">
+    <div class="card-body">
+      <h5>Titel: </h5>
+      <?php
+      echo $getPost['title'];
+      ?>
     </div>
   </div>
 </div>
 
-<?php
-$postTitle = $_POST['title'];
-$postIndhold = $_POST['indhold'];
-$postPid = $_POST['pid'];
+<div class="mb-3">
+  <div class="card">
+    <div class="card-body">
+  <h5>Indhold:</h5>
+    <?php
+    echo $getPost['content'];
+    ?>
+  </div>
+    </div>
+    </div>
+
+<div class="mb-3">
+   <a href="blogOpslag.php"><button type="submit" class="btn btn-secondary">Rediger Indlæg</button></a>
+
+  <?php
+  echo "<button onclick='blogOpslag.php?pid=".$getPost['pid']."'>".$getPost['title'];
+echo " type='submit' class='btn btn-secondary'>Rediger dit opslag</button>";
 
 
- modify_post($postPid,$postTitle,$postIndhold);
-
-
-/*if (modify_post() == true ) {
-  echo <<<END
-   <div class="alert alert-success" role="alert">
-   Blog opslag er redigeret
- </div>
- END;
-
-}
-*/
-
-
-
-
-
-
+  //echo "<a href='blogOpslag.php?pid=".$getPost['pid']."'>".$getPost['title'];
+//echo "<button type='submit' class='btn btn-secondary'>Rediger dit opslag</button>";
+//echo "</a>";
 
 
 
- ?>
+  //href='seOpslag.php?pid=".$getPost['pid']."'>".$getPost['title']."</a> </div>";
+
+?>
+  <!--  <button type="submit" class="btn btn-secondary">Rediger dit opslag</button>
+
+  </a>-->
+
+</div>
+
+    </div>
+    </div>
+</div>
+
 
 
 
