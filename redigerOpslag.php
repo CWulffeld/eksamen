@@ -42,9 +42,6 @@ session_start();
             <li class="nav-item">
               <a class="nav-link" href="alleIndlæg.php">Alle indlæg</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="redigerOpslag.php">Rediger opslag</a>
-            </li>
           </ul>
          <li class="d-flex">
            <a  href="logUd.php">
@@ -71,10 +68,9 @@ session_start();
     $postIndhold = $_POST['indhold'];
     $postPid = $_POST['pid'];
 
-
-    //echo "<br> <b>Titel: </b>", $getPost['title'], '<br>';
-    //echo "<br><b>Indhold: </b>", $getPost['content'], '<br>';
-    //echo "<div class='container'> </div>"
+    $tmp_name = $_FILES['picture']['tmp_name']; // 'picture' kommer fra input name='picture' i HTML
+                                                //der hvor filen er blevet gemt. flyttes/gemmes hen i en php variabel.
+    $mime_type =  $_FILES['picture']['type'];        // 'type' hvilken type fil det er
 
     if(!empty($postTitle)){
      modify_post($postPid,$postTitle,$postIndhold);
@@ -94,16 +90,13 @@ END;
      ?>
 
 
-
-
-
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-6">
 <form action='redigerOpslag.php' method="post">
 
   <div class="mb-3">
-  <h2>Du kan nu redigere dit opslag</h2>
+    <h2>Rediger opslag</h2>
       <h5>Titel</h5>
       <input type="text" name="title" class="form-control"
       <?php
@@ -114,7 +107,6 @@ END;
   <div class="mb-3">
   <h5>Indhold </h5>
       <textarea name="indhold" rows="10" cols="20" class="form-control"><?php echo $getPost['content'];?></textarea>
-
   </div>
 
   <div>
@@ -123,20 +115,40 @@ END;
         echo " value='" . $getPost['pid'] . "'>";
         ?>
   </div>
-  </div>
+
       <input type="hidden" name="isSubmitted" value="True">
 
   <div class="mb-3">
       <button type="submit" name="submit"class="btn btn-primary">Rediger opslag</button>
-
   </div>
 
      </form>
     </div>
+
+    <div class="col-md-6">
+
+      <div class="mb-3">
+        <h2>Tilføj billeder</h2>
+
+        <?php
+        echo <<<END
+                <form action='' method='post' enctype='multipart/form-data'>
+                <input type='file' name='picture'>
+                <input type='submit' name='submit' value='Upload'>
+              </form>
+END;
+                echo "<button type='submit' class='btn btn-primary' style='margin-top: 5px;'>Tilføj et billede til opslaget";
+                  echo "</button>";
+
+        ?>
+
+      </div>
+
+    </div>
+
+
   </div>
 </div>
-
-
 
 
 
