@@ -1,5 +1,6 @@
 <?php
 session_start();
+  require_once '/home/mir/lib/db.php';
  ?>
 <!DOCTYPE html>
 <!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/blogOpslag.php --->
@@ -10,7 +11,9 @@ session_start();
 
     <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <title>Blog Opslag</title>
+
+        <link rel="stylesheet" href="stylesheet.css" />
+    <title>Rediger Opslag</title>
   </head>
   <body>
 
@@ -37,7 +40,10 @@ session_start();
               <a class="nav-link" href="opretIndlæg.php">Opret indlæg</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="andreIndlæg.php">Andres indlæg</a>
+              <a class="nav-link" href="alleIndlæg.php">Alle indlæg</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="redigerOpslag.php">Rediger opslag</a>
             </li>
           </ul>
          <li class="d-flex">
@@ -52,21 +58,39 @@ session_start();
 
 
     <?php
-    require_once '/home/mir/lib/db.php';
 
-    $brugerPid = $_GET['pid'];
+
+    $brugerPid = $_GET['id'];
 
     //$getPost = get_post($user);
     $getPost = get_post($brugerPid);
     //$getUser = get_user($getPost['uid']);
     //$getComment = get_comment($pid);
 
+    $postTitle = $_POST['title'];
+    $postIndhold = $_POST['indhold'];
+    $postPid = $_POST['pid'];
 
 
     //echo "<br> <b>Titel: </b>", $getPost['title'], '<br>';
     //echo "<br><b>Indhold: </b>", $getPost['content'], '<br>';
     //echo "<div class='container'> </div>"
 
+    if(!empty($postTitle)){
+     modify_post($postPid,$postTitle,$postIndhold);
+      echo <<<END
+       <div class="alert alert-success" role="alert">
+       Opslaget er redigeret
+     </div>
+END;
+
+} else if ($_POST['isSubmitted']){
+      echo <<<END
+       <div class="alert alert-danger" role="alert">
+       Opslaget er ikke redigeret. Du mangler titel
+     </div>
+END;
+    }
      ?>
 
 
@@ -76,76 +100,43 @@ session_start();
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-6">
+<form action='redigerOpslag.php' method="post">
 
-
-
-<form action='blogOpslag.php' method="post">
-
-  <h2>Du kan nu se og redigere dit opslag</h2>
+  <div class="mb-3">
+  <h2>Du kan nu redigere dit opslag</h2>
       <h5>Titel</h5>
-<div class="mb-3">
-  <input type="text" name="title" class="form-control"
-  <?php
-  echo " value='" . $getPost['title'] . "'>";
-  ?>
-</div>
-<div class="mb-3">
+      <input type="text" name="title" class="form-control"
+      <?php
+      echo "value='" . $getPost['title'] . "'>";
+      ?>
+    </div>
+
+  <div class="mb-3">
   <h5>Indhold </h5>
- <textarea name="indhold" rows="10" cols="20" class="form-control">
-<?php
-  echo $getPost['content'];
-?>
+      <textarea name="indhold" rows="10" cols="20" class="form-control"><?php echo $getPost['content'];?></textarea>
 
-</textarea>
+  </div>
 
-</div>
-<div>
-<input type='hidden' name = 'pid'
+  <div>
+    <input type='hidden' name = 'pid'
+    <?php
+        echo " value='" . $getPost['pid'] . "'>";
+        ?>
+  </div>
+  </div>
+      <input type="hidden" name="isSubmitted" value="True">
 
-<?php
-       echo " value='" . $getPost['pid'] . "'>";
-?>
+  <div class="mb-3">
+      <button type="submit" name="submit"class="btn btn-primary">Rediger opslag</button>
 
-</div>
-
-<div class="mb-3">
-  <button type="submit" name="submit"class="btn btn-primary">Rediger opslag</button>
-
-</div>
+  </div>
 
      </form>
     </div>
   </div>
 </div>
 
-<?php
-$postTitle = $_POST['title'];
-$postIndhold = $_POST['indhold'];
-$postPid = $_POST['pid'];
 
-
- modify_post($postPid,$postTitle,$postIndhold);
-
-
-/*if (modify_post() == true ) {
-  echo <<<END
-   <div class="alert alert-success" role="alert">
-   Blog opslag er redigeret
- </div>
- END;
-
-}
-*/
-
-
-
-
-
-
-
-
-
- ?>
 
 
 

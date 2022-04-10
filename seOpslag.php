@@ -10,7 +10,11 @@ session_start();
 
     <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="stylesheet.css" />
+
     <title>Blog Opslag</title>
+
   </head>
   <body>
 
@@ -37,7 +41,7 @@ session_start();
               <a class="nav-link" href="opretIndlæg.php">Opret indlæg</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="andreIndlæg.php">Andres indlæg</a>
+              <a  class="nav-link" href="alleIndlæg.php">Alle indlæg</a>
             </li>
           </ul>
          <li class="d-flex">
@@ -54,10 +58,20 @@ session_start();
     <?php
     require_once '/home/mir/lib/db.php';
 
-    $brugerPid = $_GET['pid'];
+    $brugerPid = $_GET['id'];
+    $user = $_SESSION['user'];
+    $userInfo = get_user($user);
 
     //$getPost = get_post($user);
     $getPost = get_post($brugerPid);
+    //$getUserPost = get_post(['uid']);
+    $getUser = get_user($getPost['uid']);
+
+
+    //$getComment = get_comment($brugerPid);
+
+
+    //$getUser = get_user($getPost['uid']);
     //$getUser = get_user($getPost['uid']);
     //$getComment = get_comment($pid);
 
@@ -76,13 +90,43 @@ session_start();
      <div class='container mt-5 mb-5'>
        <div class='row'>
            <div class= 'col-md-6'  >
-<h2>Se dit blog indlæg</h2>
-
+<h2>Blog indlægget</h2>
 
 <div class="mb-3">
   <div class="card">
+    <div class="card-header">
+    <h5>  Forfatter profil<h5>
+    </div>
     <div class="card-body">
-      <h5>Titel: </h5>
+<?php       echo "<b> Pid: </b>", $getPost['uid']; ?>
+      <br>
+      <?php echo "<b> Fornavn: </b>", $getUser['firstname']; ?>
+      <br>
+      <?php echo "<b> Efternavn: </b>",$getUser['lastname']; ?>
+    </div>
+  </div>
+</div>
+
+<div class="mb-3">
+  <div class="card">
+    <div class="card-header">
+      <h5>Dato</h5>
+    </div>
+    <div class="card-body">
+      <?php
+      echo $getPost['date'];
+      ?>
+    </div>
+  </div>
+</div>
+
+<div class="mb-3">
+  <div class="card">
+    <div class="card-header">
+        <h5>Titel </h5>
+    </div>
+    <div class="card-body">
+
       <?php
       echo $getPost['title'];
       ?>
@@ -92,8 +136,11 @@ session_start();
 
 <div class="mb-3">
   <div class="card">
+    <div class="card-header">
+        <h5>Indhold</h5>
+    </div>
     <div class="card-body">
-  <h5>Indhold:</h5>
+
     <?php
     echo $getPost['content'];
     ?>
@@ -101,28 +148,85 @@ session_start();
     </div>
     </div>
 
-<div class="mb-3">
-   <a href="blogOpslag.php"><button type="submit" class="btn btn-secondary">Rediger Indlæg</button></a>
+    <div class="mb-3">
+      <div class="card">
+        <div class="card-header">
+          <h5>Kommentar</h5>
+        </div>
+        <div class="card-body">
 
-  <?php
-  echo "<button onclick='blogOpslag.php?pid=".$getPost['pid']."'>".$getPost['title'];
-echo " type='submit' class='btn btn-secondary'>Rediger dit opslag</button>";
+        <?php
+        //echo $getComment['content'];
+
+foreach (get_cids_by_pid($brugerPid) as $comments) {
+  $getComments = get_comment($comments);
+  echo $getComments['uid'],": ", $getComments['content'],"<br>" ,$getComments['date'], "<br> <br>";
+
+}
+
+        ?>
+      </div>
+        </div>
+        </div>
+
+    <div class="mb-3">
+
+      <?php
+
+      // stil spørgsmål til session $user og connection
+      // hvorfor virker det med lokal variabel frem for connection?
+      if (!empty($_SESSION['user'])){
+        $komIndhold = $_POST['komIndhold'];
+        $komUid = $_POST['komUid'];
+        $komPid = $_POST['komPid'];
+
+      echo "<form action='' method='post'>";
+      echo "<textarea name='komIndhold' class='form-control' id='komIndhold' placeholder='Skriv kommentar' rows='5' cols='20'></textarea>";
+
+      echo "<input type='hidden' name='komUid'";
+      echo " value='" . $user . "'>";
+      echo "<input  type='hidden' name='komPid'";
+      echo " value='" . $getPost['pid'] . "'>";
+    //  echo "<a href='seOpslag.php?id=".$getPost['pid'].$getPost['title']."'>";
+      echo "<button type='submit' name='submit'class='btn btn-primary'  style='margin-top: 5px;'>Tilføj kommentar</button>";
+    //  echo "</a>";
 
 
-  //echo "<a href='blogOpslag.php?pid=".$getPost['pid']."'>".$getPost['title'];
-//echo "<button type='submit' class='btn btn-secondary'>Rediger dit opslag</button>";
-//echo "</a>";
 
+      echo "</form>";
+      add_comment($komUid, $komPid, $komIndhold);
 
+if($user==$getPost['uid']){
+  echo "<a class='link' href='redigerOpslag.php?id=".$getPost['pid'].$getPost['title']."'>";
+  echo "<button type='submit' class='btn btn-primary' style='margin-top: 5px;'>Rediger dit opslag";
+  echo "</button>";
+  echo "</a>";
+}
+    }  else {
+        echo "Du skal være logget ind for at kommentere";
+      }
 
-  //href='seOpslag.php?pid=".$getPost['pid']."'>".$getPost['title']."</a> </div>";
+      ?>
+    </div>
 
+    </div>
+
+    <div class= 'col-md-6'  >
+<h2>Billeder til indlægget</h2>
+<?php //Henter billeder
+
+foreach (get_iids_by_pid($brugerPid) as $iid){
+
+     $getImage = get_image($iid);
+     $image_url = $getImage['path'];
+
+     echo "<img src='$image_url' height='300'/>";
+
+   }
+   //echo "Her skulle der være billede";
 ?>
-  <!--  <button type="submit" class="btn btn-secondary">Rediger dit opslag</button>
 
-  </a>-->
-
-</div>
+         </div>
 
     </div>
     </div>

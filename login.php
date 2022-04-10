@@ -51,16 +51,26 @@ if (isset($_POST['uid']) && isset($_POST['password'])) {
 
         <link rel="stylesheet" href="stylesheet.css" />
 
-
-
     <title> Login </title>
+
 
   </head>
   <body>
 
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand">WITS 2022</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="alleIndlæg.php">Alle indlæg</a>
+            </li>
+            </ul>
+      </div>
       </div>
     </nav>
 
@@ -100,7 +110,7 @@ END;
           <div class="mb-3 ">
             <h2>Ikke bruger endnu?</h2>
           <p>  Tilmeld dig her</p>
-                <a href="signUp.php"><button type="submit" class="btn btn-secondary">Sign Up</button></a>
+                <a href="signUp.php"><button type="submit" class="btn btn-primary">Sign Up</button></a>
 
           </div>
         </div>

@@ -1,21 +1,25 @@
 
  body {
   background-color:#DFDEDE;
-font-family: Helvetica;
+  font-family: Helvetica;
    }
+
+   h2{
+     color: #212529;
+     font-weight: bold;
+     font-size: 300%;
+   }
+   h5{
+     color: #212529;
+     font-weight: bold;
+   }
+
+
+
+
+
 
  .btn-secondary{
    background-color: #DFDEDE;
    color: #212529;
      }
-
-  h2{
-    color: #212529;
-    font-weight: bold;
-    font-size: 300%;
-  }
-
-  .card-body {
-background-color: #FFF;
-border-radius: 25px;
-}
