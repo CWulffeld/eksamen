@@ -97,17 +97,37 @@ END;
 
   <div class="mb-3">
     <h2>Rediger opslag</h2>
-      <h5>Titel</h5>
-      <input type="text" name="title" class="form-control"
-      <?php
-      echo "value='" . $getPost['title'] . "'>";
-      ?>
-    </div>
+
+<div class="card">
+  <div class="card-header">
+    <h5>Titel</h5>
+  </div>
+
+
+<div class="card-body">
+  <input type="text" name="title" class="form-control"
+  <?php
+  echo "value='" . $getPost['title'] . "'>";
+  ?>
+</div>
+</div>
+</div>
+
+
 
   <div class="mb-3">
-  <h5>Indhold </h5>
-      <textarea name="indhold" rows="10" cols="20" class="form-control"><?php echo $getPost['content'];?></textarea>
+<div class="card">
+  <div class="card-header">
+    <h5>Indhold </h5>
   </div>
+
+  <div class="card-body">
+    <textarea name="indhold" rows="10" cols="20" class="form-control"><?php echo $getPost['content'];?></textarea>
+
+  </div>
+  </div>
+  </div>
+
 
   <div>
     <input type='hidden' name = 'pid'
