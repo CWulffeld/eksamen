@@ -24,6 +24,8 @@ session_start();
       header('Location:login.php');
       exit;
     }*/
+
+
      ?>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -66,20 +68,6 @@ session_start();
     $getPost = get_post($brugerPid);
     //$getUserPost = get_post(['uid']);
     $getUser = get_user($getPost['uid']);
-
-
-    //$getComment = get_comment($brugerPid);
-
-
-    //$getUser = get_user($getPost['uid']);
-    //$getUser = get_user($getPost['uid']);
-    //$getComment = get_comment($pid);
-
-
-
-    //echo "<br> <b>Titel: </b>", $getPost['title'], '<br>';
-    //echo "<br><b>Indhold: </b>", $getPost['content'], '<br>';
-    //echo "<div class='container'> </div>"
 
      ?>
 
@@ -211,7 +199,11 @@ if($user==$getPost['uid']){
 }
 
     }  else {
-        echo "Du skal være logget ind for at kommentere";
+      echo "<div class='card'>";
+      echo "<div class='card-body'>";
+        echo "<p> Du skal være logget ind for at kommentere </p>";
+        echo "</div>";
+        echo "</div>";
       }
 
       ?>
@@ -233,10 +225,6 @@ foreach (get_iids_by_pid($brugerPid) as $iid){
 
    }
 
-   if($user==$getPost['uid']){
-     echo "<button type='submit' class='btn btn-primary' style='margin-top: 5px;'>Tilføj et billede til opslaget";
-       echo "</button>";
-   }
 ?>
 
          </div>
