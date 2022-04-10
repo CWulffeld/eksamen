@@ -156,34 +156,24 @@ session_start();
         <div class="card-body">
 
         <?php
-if($user==$getPost['uid']){
+
   foreach (get_cids_by_pid($brugerPid) as $comments) {
     $getComments = get_comment($comments);
     $cid = $getComments['cid'];
-    echo $getComments['uid'],": ", $getComments['content'],"<br>" ,$getComments['date'], "<br>";
+    echo  "<b>", $getComments['uid'],"</b>",": ", $getComments['content'],"<br>" ,$getComments['date'], "<br>";
 
+if($user==$getPost['uid'] || $user==$getComments['uid']){
 echo "<a class='link' href='sletKommentar.php?id=".$cid."'>";
 echo "<button type='submit' class='btn btn-secondary' style='margin-top: 5px;'>Slet";
 echo "</button>";
 echo "</a>";
-echo " <br> <br>";
+echo "<br>";
 
-  }
-
-
-}else {
-
-  foreach (get_cids_by_pid($brugerPid) as $comments) {
-    $getComments = get_comment($comments);
-    echo $getComments['uid'],": ", $getComments['content'],"<br>" ,$getComments['date'], "<br> <br>";
-
-  }
+}
+echo "<br>";
 
 
 }
-
-
-
 
         ?>
       </div>
@@ -220,7 +210,6 @@ if($user==$getPost['uid']){
   echo "</a>";
 }
 
-
     }  else {
         echo "Du skal være logget ind for at kommentere";
       }
@@ -231,6 +220,7 @@ if($user==$getPost['uid']){
     </div>
 
     <div class= 'col-md-6'  >
+
 <h2>Billeder til indlægget</h2>
 <?php //Henter billeder
 
@@ -242,7 +232,11 @@ foreach (get_iids_by_pid($brugerPid) as $iid){
      echo "<img src='$image_url' height='300'/>";
 
    }
-   //echo "Her skulle der være billede";
+
+   if($user==$getPost['uid']){
+     echo "<button type='submit' class='btn btn-primary' style='margin-top: 5px;'>Tilføj et billede til opslaget";
+       echo "</button>";
+   }
 ?>
 
          </div>

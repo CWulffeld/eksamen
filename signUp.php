@@ -29,9 +29,39 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
             <li class="nav-item">
               <a class="nav-link"  href="login.php">Log ind</a>
             </li>
+
+            <li class="nav-item">
+              <a class="nav-link"  href="alleIndlæg.php">Alle indlæg</a>
+            </li>
         </div>
       </div>
     </nav>
+
+    <?php
+    require_once '/home/mir/lib/db.php';
+    $uid = $_POST['uid'];
+    $firstname = $_POST['fornavn'];
+    $password = $_POST['password'];
+    $lastname = $_POST['efternavn'];
+
+
+    if(!empty($uid && $firstname && $password)){
+      add_user($uid, $firstname, $lastname, $password);
+      echo <<<END
+       <div class="alert alert-success" role="alert">
+       Du er oprettet som bruger
+     </div>
+END;
+
+} else if ($_POST['isSubmitted']){
+      echo <<<END
+       <div class="alert alert-danger" role="alert">
+       Du er ikke oprettet som bruger, måsker du mangler brugernavn, fornavn eller adgangskode?
+     </div>
+END;
+    }
+
+     ?>
 
 
 
@@ -59,6 +89,9 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
               <label for="password" class="form-label"> <b> Adgangskode </b></label>
               <input type="password" class="form-control"name="password" placeholder="Indtast adgangskode">
           </div>
+
+          <input type="hidden" name="isSubmitted" value="True">
+
           <div class="mb-3">
               <button type="submit" name="submit" class="btn btn-primary">Opret dig</button>
             </form>
@@ -99,16 +132,6 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
 
 
 
-    <?php
-    require_once '/home/mir/lib/db.php';
-    $uid = $_POST['uid'];
-    $firstname = $_POST['fornavn'];
-    $password = $_POST['password'];
-    $lastname = $_POST['efternavn'];
-
-    add_user($uid, $firstname, $lastname, $password);
-
-     ?>
 
      <!-- Optional JavaScript -->
      <!-- Option 1: Bootstrap Bundle with Popper -->
