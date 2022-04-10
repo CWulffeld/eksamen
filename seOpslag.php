@@ -19,11 +19,11 @@ session_start();
   <body>
 
     <?php
-    if (empty($_SESSION['user']))
+    /*if (empty($_SESSION['user']))
     {
       header('Location:login.php');
       exit;
-    }
+    }*/
      ?>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -156,13 +156,34 @@ session_start();
         <div class="card-body">
 
         <?php
-        //echo $getComment['content'];
+if($user==$getPost['uid']){
+  foreach (get_cids_by_pid($brugerPid) as $comments) {
+    $getComments = get_comment($comments);
+    $cid = $getComments['cid'];
+    echo $getComments['uid'],": ", $getComments['content'],"<br>" ,$getComments['date'], "<br>";
 
-foreach (get_cids_by_pid($brugerPid) as $comments) {
-  $getComments = get_comment($comments);
-  echo $getComments['uid'],": ", $getComments['content'],"<br>" ,$getComments['date'], "<br> <br>";
+echo "<a class='link' href='sletKommentar.php?id=".$cid."'>";
+echo "<button type='submit' class='btn btn-secondary' style='margin-top: 5px;'>Slet";
+echo "</button>";
+echo "</a>";
+echo " <br> <br>";
+
+  }
+
+
+}else {
+
+  foreach (get_cids_by_pid($brugerPid) as $comments) {
+    $getComments = get_comment($comments);
+    echo $getComments['uid'],": ", $getComments['content'],"<br>" ,$getComments['date'], "<br> <br>";
+
+  }
+
 
 }
+
+
+
 
         ?>
       </div>
@@ -187,14 +208,10 @@ foreach (get_cids_by_pid($brugerPid) as $comments) {
       echo " value='" . $user . "'>";
       echo "<input  type='hidden' name='komPid'";
       echo " value='" . $getPost['pid'] . "'>";
-    //  echo "<a href='seOpslag.php?id=".$getPost['pid'].$getPost['title']."'>";
       echo "<button type='submit' name='submit'class='btn btn-primary'  style='margin-top: 5px;'>Tilføj kommentar</button>";
-    //  echo "</a>";
-
-
-
       echo "</form>";
-      add_comment($komUid, $komPid, $komIndhold);
+     add_comment($komUid, $komPid, $komIndhold);
+
 
 if($user==$getPost['uid']){
   echo "<a class='link' href='redigerOpslag.php?id=".$getPost['pid'].$getPost['title']."'>";
@@ -202,6 +219,8 @@ if($user==$getPost['uid']){
   echo "</button>";
   echo "</a>";
 }
+
+
     }  else {
         echo "Du skal være logget ind for at kommentere";
       }
