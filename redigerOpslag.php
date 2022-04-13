@@ -3,7 +3,7 @@ session_start();
   require_once '/home/mir/lib/db.php';
  ?>
 <!DOCTYPE html>
-<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/blogOpslag.php --->
+<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/redigerOpslag.php --->
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -14,21 +14,25 @@ session_start();
 
         <link rel="stylesheet" href="stylesheet.css" />
     <title>Rediger Opslag</title>
+
   </head>
+
   <body>
 
-    <?php
+<?php
     if (empty($_SESSION['user']))
     {
       header('Location:login.php');
       exit;
     }
-     ?>
+?>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <a class="navbar-brand">WITS 2022</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<!-- Navigationsbar -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand">WITS 2022</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -47,30 +51,22 @@ session_start();
            <a  href="logUd.php">
              <button type="submit" class="btn btn-secondary">Log ud</button>
            </a>
-           </li>
-        </div>
-      </div>
-    </nav>
+        </li>
+    </div>
+  </div>
+</nav>
 
 
+<!-- Variabler og metoder i PHP -->
+<?php
 
-    <?php
+    $brugerPid = $_GET['id']; //Henter pid for opslaget fra GET metoden
+    $getPost = get_post($brugerPid); //Henter opslaget fra den hentede pid fra GET metoden
 
+    $postTitle = $_POST['title']; //Redigerede titel (nye titel) i en variabel
+    $postIndhold = $_POST['indhold']; //Redigerede indhold (nyt indhold) i en variabel
+    $postPid = $_POST['pid']; //pid for det redigerede indlæg
 
-    $brugerPid = $_GET['id'];
-
-    //$getPost = get_post($user);
-    $getPost = get_post($brugerPid);
-    //$getUser = get_user($getPost['uid']);
-    //$getComment = get_comment($pid);
-
-    $postTitle = $_POST['title'];
-    $postIndhold = $_POST['indhold'];
-    $postPid = $_POST['pid'];
-
-    $tmp_name = $_FILES['picture']['tmp_name']; // 'picture' kommer fra input name='picture' i HTML
-                                                //der hvor filen er blevet gemt. flyttes/gemmes hen i en php variabel.
-    $mime_type =  $_FILES['picture']['type'];        // 'type' hvilken type fil det er
 
     if(!empty($postTitle)){
      modify_post($postPid,$postTitle,$postIndhold);
@@ -80,21 +76,60 @@ session_start();
      </div>
 END;
 
-} else if ($_POST['isSubmitted']){
+} else if ($_POST['isSubmitted']){ // rent kosmetisk, true value som sørger for at det kun bliver vist når man trykker på submit. Så det ikke hele tiden står fremme.
       echo <<<END
        <div class="alert alert-danger" role="alert">
        Opslaget er ikke redigeret. Du mangler titel
      </div>
 END;
     }
-     ?>
+
+
+
+
+
+//Tilføj billeder
+    $temp_path = $_FILES['picture']['tmp_name']; //Midlertidig placering
+    $mime_type =  $_FILES['picture']['type']; //Mime type filer
+    if($mime_type == 'image/png'){ //If statement som tildeler variablen $type en ny variabel bestemt efter hvilkem mime type den uploadede fil har
+      $type = '.png';
+    } else if($mime_type == 'image/jpg'){
+      $type = '.jpg';
+    }else if($mime_type == 'image/jpeg'){
+      $type = '.jpeg';
+    } else if($mime_type == 'image/gif'){
+      $type = '.gif';
+    } else if ($mime_type == 'image/svg'){
+      $type = '.svg';
+    }
+
+    $iid = add_image($temp_path, $type); //Resultatet af add_image er id for billeder. Denne værdi ligges i variablen iid (image ID)
+    add_attachment($brugerPid, $iid); //Tilføjer billedet til det specifkke opslag som brugeren er igang med at redigere
+
+if (!empty($iid)) {
+  if ($_POST['picIsSubmitted']) {
+    echo <<<END
+     <div class="alert alert-success" role="alert">
+     Billedet er tilføjet
+   </div>
+END;
+  echo "tttttt";
+  }
+} else {
+  echo <<<END
+   <div class="alert alert-danger" role="alert">
+   Ikke tilføjet
+ </div>
+END;
+}
+
+?>
 
 
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-6">
 <form action='redigerOpslag.php' method="post">
-
   <div class="mb-3">
     <h2>Rediger opslag</h2>
 
@@ -105,6 +140,7 @@ END;
 
 
 <div class="card-body">
+<!-- Indholdet af form titel sættes til at være indlæggets titel. Henter titlen på det specifikke indlæg som brugeren har valgt -->
   <input type="text" name="title" class="form-control"
   <?php
   echo "value='" . $getPost['title'] . "'>";
@@ -114,28 +150,27 @@ END;
 </div>
 
 
-
   <div class="mb-3">
-<div class="card">
-  <div class="card-header">
-    <h5>Indhold </h5>
-  </div>
+    <div class="card">
+      <div class="card-header">
+        <h5>Indhold </h5>
+      </div>
 
-  <div class="card-body">
-    <textarea name="indhold" rows="10" cols="20" class="form-control"><?php echo $getPost['content'];?></textarea>
+      <div class="card-body">
+        <textarea name="indhold" rows="10" cols="20" class="form-control"><?php echo $getPost['content'];?></textarea>
 
+      </div>
   </div>
-  </div>
-  </div>
+</div>
 
-
+<!-- Sender pid med som hidden -->
   <div>
     <input type='hidden' name = 'pid'
     <?php
         echo " value='" . $getPost['pid'] . "'>";
         ?>
   </div>
-
+<!-- Tjekker hvorvidt formen er sendt. Bruges til alert boks -->
       <input type="hidden" name="isSubmitted" value="True">
 
   <div class="mb-3">
@@ -145,30 +180,57 @@ END;
      </form>
     </div>
 
+<!-- HTML billede funktioner -->
     <div class="col-md-6">
-
       <div class="mb-3">
         <h2>Tilføj billeder</h2>
+        <div class="card">
+          <div class="card-header">
+            <h5>Upload </h5>
+          </div>
+          <div class="card-body">
+            <p>Du må uploade følgende filtyper: png, jpg, jpeg, gif og svg</p>
 
-        <?php
-        echo <<<END
-                <form action='' method='post' enctype='multipart/form-data'>
-                <input type='file' name='picture'>
-                <input type='submit' name='submit' value='Upload'>
-              </form>
-END;
-                echo "<button type='submit' class='btn btn-primary' style='margin-top: 5px;'>Tilføj et billede til opslaget";
-                  echo "</button>";
+            <form action='' method='post' enctype='multipart/form-data'>
+            <input type='file' name='picture'>
+              <input type="hidden" name="picIsSubmitted" value="True">
+            <input type='submit' name='submit' class='btn btn-primary' value='Tilføj billede'>
 
-        ?>
-
+            </form>
+          </div>
+        </div>
       </div>
+
+<!-- Tilbage knap -->
+<div class="mb-3">
+  <div class="card">
+    <div class="card-header">
+      <h5>Tilbage</h5>
+    </div>
+    <div class="card-body">
+      <p>Hvis du vil tilbage til opslaget. Klik på knappen </p>
+  <?php //Knap til at komme tilbage til indlægget
+  echo "<a class='link' href='seOpslag.php?id=".$getPost['pid']."'>"; //
+  echo "<button type='submit' class='btn btn-secondary' >Opslaget";
+  echo "</button>";
+  echo "</a>";
+    ?>
+
+  </div>
+</div>
+
+
+
+</div>
 
     </div>
 
 
   </div>
 </div>
+
+
+
 
 
 
