@@ -87,7 +87,7 @@ END;
           </div>
           <div class="mb-3"> <!-- MB bestemmer margin bund -->
             <label for="efternavn" class="form-label"> <b> Efternavn </b></label>
-            <input type="text" name="efternavn"class="form-control" placeholder="Indtast brugernavn">
+            <input type="text" name="efternavn"class="form-control" placeholder="Indtast efternavn">
           </div>
           <div class="mb-3 ">
               <label for="password" class="form-label"> <b> Adgangskode </b></label>
