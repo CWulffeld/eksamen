@@ -3,7 +3,10 @@ session_start();
   require_once '/home/mir/lib/db.php';
  ?>
 <!DOCTYPE html>
-<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/redigerOpslag.php --->
+<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/redigerOpslag.php
+Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
+ --->
+
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -18,6 +21,7 @@ session_start();
   </head>
 
   <body>
+  <!-- Hvis $_Session bruger er tom, skal man sendes tilbage til login siden -->
 
 <?php
     if (empty($_SESSION['user']))
@@ -85,9 +89,6 @@ END;
     }
 
 
-
-
-
 //Tilføj billeder
     $temp_path = $_FILES['picture']['tmp_name']; //Midlertidig placering
     $mime_type =  $_FILES['picture']['type']; //Mime type filer
@@ -106,19 +107,17 @@ END;
     $iid = add_image($temp_path, $type); //Resultatet af add_image er id for billeder. Denne værdi ligges i variablen iid (image ID)
     add_attachment($brugerPid, $iid); //Tilføjer billedet til det specifkke opslag som brugeren er igang med at redigere
 
-if (!empty($iid)) {
-  if ($_POST['picIsSubmitted']) {
-    echo <<<END
+if (!empty($iid) && $_POST['picIsSubmitted']) { //hvis vi trykker på knappen og iid har en værdi, så går vi ud fra billedet bliver tilføjet. kosmetisk: picIsSubmitted og logik: iid
+  echo <<<END
      <div class="alert alert-success" role="alert">
      Billedet er tilføjet
    </div>
 END;
-  echo "tttttt";
-  }
-} else {
+
+} else if(empty($iid) && $_POST['picIsSubmitted'] ) { //picIsSubmitted er rent kosmetisk og er kun true når man trykker submit, så snart man trykker på submit bliver den true.
   echo <<<END
    <div class="alert alert-danger" role="alert">
-   Ikke tilføjet
+   Ikke tilføjet billede
  </div>
 END;
 }
@@ -129,7 +128,7 @@ END;
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-6">
-<form action='redigerOpslag.php' method="post">
+<form action='' method="post">
   <div class="mb-3">
     <h2>Rediger opslag</h2>
 
@@ -170,11 +169,12 @@ END;
         echo " value='" . $getPost['pid'] . "'>";
         ?>
   </div>
+
 <!-- Tjekker hvorvidt formen er sendt. Bruges til alert boks -->
       <input type="hidden" name="isSubmitted" value="True">
 
   <div class="mb-3">
-      <button type="submit" name="submit"class="btn btn-primary">Rediger opslag</button>
+      <button type="submit" name="submit"class="btn btn-primary">Ændre Opslaget</button>
   </div>
 
      </form>
@@ -202,13 +202,13 @@ END;
       </div>
 
 <!-- Tilbage knap -->
-<div class="mb-3">
-  <div class="card">
-    <div class="card-header">
-      <h5>Tilbage</h5>
-    </div>
-    <div class="card-body">
-      <p>Hvis du vil tilbage til opslaget. Klik på knappen </p>
+  <div class="mb-3">
+    <div class="card">
+      <div class="card-header">
+        <h5>Tilbage</h5>
+      </div>
+      <div class="card-body">
+        <p>Hvis du vil tilbage til opslaget. Klik på knappen </p>
   <?php //Knap til at komme tilbage til indlægget
   echo "<a class='link' href='seOpslag.php?id=".$getPost['pid']."'>"; //
   echo "<button type='submit' class='btn btn-secondary' >Opslaget";
@@ -216,22 +216,14 @@ END;
   echo "</a>";
     ?>
 
-  </div>
-</div>
-
-
-
-</div>
-
+      </div>
     </div>
-
-
   </div>
 </div>
 
 
-
-
+  </div>
+</div>
 
 
      <!-- Optional JavaScript -->

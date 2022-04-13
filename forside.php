@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/forside.php
 Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
-
 --->
 
 <?php
@@ -12,8 +11,7 @@ if (empty($_SESSION['user'])) { //tjekker om brugeren allerede er logget ind
   header('Location:login.php');
   exit;
 }
-
-     ?>
+?>
 
 
  <html lang="en" dir="ltr">
@@ -32,7 +30,7 @@ if (empty($_SESSION['user'])) { //tjekker om brugeren allerede er logget ind
 
   </head>
       <body>
-
+        <!--- Navigationsbar --->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <div class="container-fluid">
             <a class="navbar-brand">WITS 2022</a>
@@ -60,14 +58,11 @@ if (empty($_SESSION['user'])) { //tjekker om brugeren allerede er logget ind
             </div>
           </div>
         </nav>
+        <!--- Navigationsbar slut --->
 
-     <?php
-
+<?php
      $user = $_SESSION['user'];
-     $hentInfo = get_user($user);
-
-
-
+     $hentInfo = get_user($user); //Henter information om brugeren som er ligget ind
 ?>
 
 
@@ -75,8 +70,8 @@ if (empty($_SESSION['user'])) { //tjekker om brugeren allerede er logget ind
   <div class='row'>
       <div class= 'col-md-6'  >
 
-
 <?php
+//Printer oplysninger om brugeren ud
 echo "<h2> Din profil</h2>  <br>";
 echo "<div class='card'>"; //Laver tekstfeltet som card
 echo "<div class='card-body'>";
@@ -85,27 +80,21 @@ echo "<b>Fornavn:  </b>", $hentInfo['firstname'], '<br>' ;
 echo "<b>Efternavn: </b>", $hentInfo['lastname'], '<br>';
 echo "</div>";
 echo "</div>";
-
 ?>
       </div>
-
-      <div class='col-md-6' >
-
-
-          <?php
-          echo "<h2> Dine opslagstitler </h2>  <br>";
-
-            foreach (get_pids_by_uid($user) as $pid){
-              $getPost = get_post($pid);
-                    echo "<div class='list-group'>
+  <div class='col-md-6' >
+    <h2>Dine opslagstitler</h2>
+      <br>
+        <?php
+          foreach (get_pids_by_uid($user) as $pid){
+            $getPost = get_post($pid);
+              echo "<div class='list-group'>
                     <a
-                      class='list-group-item list-group-item-action' href='seOpslag.php?id=".$getPost['pid']."'>".$getPost['title']."</a> </div>";
-
+                    class='list-group-item list-group-item-action' href='seOpslag.php?id=".$getPost['pid']."'>".$getPost['title']."</a> </div>";
             }
-            ?>
-      </div>
-
-    </div>
+        ?>
+  </div>
+</div>
 </div>
 
 

@@ -4,7 +4,6 @@ session_start();
 <!DOCTYPE html>
 <!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/login.php
 Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
-
 --->
 <?php
 

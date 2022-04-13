@@ -1,5 +1,9 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
+<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/alleIndlæg.php
+Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
+--->
+
 <?php
 require_once '/home/mir/lib/db.php';
  ?>
@@ -13,12 +17,11 @@ require_once '/home/mir/lib/db.php';
 
         <link rel="stylesheet" href="stylesheet.css" />
 
-
-
     <title> Alle indlæg </title>
   </head>
   <body>
 
+<!--- Navigationsbar --->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand">WITS 2022</a>
@@ -45,21 +48,18 @@ require_once '/home/mir/lib/db.php';
         </div>
       </div>
     </nav>
+  <!--- Navigationsbar slut --->
 
     <?php
-
     $uid = $_GET['id']; //kommer fra name="id" i input
-
-    //Henter uid fra database users
-    $getUser = get_user($uid);
-
+    $getUser = get_user($uid); //Henter uid oplysninger fra database users
      ?>
 
 <div class='container mt-5 mb-5'>
   <div class='row'>
-
-
     <div class= 'col-md-6'  >
+
+  <!--- Mulighed for at søge på bruger --->
 <div>
     <h2> Søg bruger </h2>
       <form action="alleIndlæg.php" method="get" class="form-control">
@@ -68,71 +68,67 @@ require_once '/home/mir/lib/db.php';
         <input  type="text" id="pid" name="id">
         <input class="btn btn-primary" type="submit">
   </form>
-
 </div>
+
 <div>
   <div class="card" >
     <div class="card-header">
-<h5>  Brugerprofil</h5>
-  </div>
-    <div class="card-body" >
-
-  <?php
+      <h5>  Brugerprofil</h5>
+    </div>
+      <div class="card-body" >
+<?php
+    //Printer oplysninger om brugeren fra databasen i bootstrap card
     echo "<b>Bruger: </b>", $getUser['uid'], '<br>';
     echo "<b>Fornavn: </b>", $getUser['firstname'], '<br>';
     echo "<b>Efternavn: </b>", $getUser['lastname'], '<br>';
-    ?>
+?>
     </div>
-    </div>
+  </div>
 </div>
+
 <div class="card">
-<div class="card-header">
-<h5>  Titler</h5>
-</div>
+  <div class="card-header">
+    <h5>  Titler</h5>
+  </div>
 
-  <div class="card-body">
-
-        <?php
+    <div class="card-body">
+<?php
+//Loop som returnerer array for alle indlæg skrevet af den søgte bruger og ligger den over i variablen $pid
       foreach (get_pids_by_uid($uid) as $pid){
+        //Henter indlæg/post for $pid
         $getPost = get_post($pid);
 
+        //Printer listen ud (bootstrap) hvori der er et link hvor man bliver sendt til seOpslag.php med
         echo "<div class='list-group'>
-        <a class='list-group-item list-group-item-action' href='seOpslag.php?id=".$getPost['pid']."'>".$getPost['title']."</a> </div>";
+        <a class='list-group-item list-group-item-action' href='seOpslag.php?id=".$getPost['pid']."'>".$getPost['title']."</a> </div>"; //Vi kan ikke slette title, hvis title slettes, bliver listen af titler ikke printet ud. Vi lukker a før titel href, for at det ikke bliver vist i URL.
       }
+?>
 
-        ?>
-
+    </div>
+  </div>
 </div>
+
+
+<div class="col-md-6">
+  <h2> Alle brugere </h2>
+    <div class="card">
+      <div class="card-body">
+
+<?php
+      $getUids = get_uids(); //Returnerer array med alle bruger id'er
+      foreach ($getUids as $uid){ //Printer arrayet ud
+      echo "<li>"; //Tilføjer tegn
+      echo $uid; //Printer uid'et (id'et for brugereb)
+      echo "</li>";
+      }
+?>
+
+      </div>
     </div>
   </div>
 
-
-    <div class="col-md-6">
-      <h2> Alle brugere </h2>
-      <div class="card">
-        <div class="card-body">
-
-      <?php
-      $getUids = get_uids();
-      foreach ($getUids as $uid){
-        echo "<li>";
-
-      echo $uid;
-      echo "</li>";
-      }
-        ?>
-
-        </div>
-        </div>
-  </div>
-
   </div>
 </div>
-
-
-
-
-
 
 
      <!-- Optional JavaScript -->

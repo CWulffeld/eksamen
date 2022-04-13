@@ -1,8 +1,7 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
-<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/forside.php
+<!--- Link til browser: https://wits.ruc.dk/~lsjn/eksamen/signUp.php
 Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
-
 --->
 
 
@@ -18,6 +17,8 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
   </head>
   <body>
 
+<!--- Navigationsbar --->
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" >WITS 2022</a>
@@ -29,22 +30,23 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
             <li class="nav-item">
               <a class="nav-link"  href="login.php">Log ind</a>
             </li>
-
             <li class="nav-item">
               <a class="nav-link"  href="alleIndlæg.php">Alle indlæg</a>
             </li>
         </div>
       </div>
     </nav>
+<!--- Navigationsbar slut --->
 
-    <?php
+<?php
     require_once '/home/mir/lib/db.php';
+    //Hentet indtastet information i vores form. Valgt post da informationen ikke er synlig i url adressen som get metoden er
     $uid = $_POST['uid'];
     $firstname = $_POST['fornavn'];
     $password = $_POST['password'];
     $lastname = $_POST['efternavn'];
 
-
+    //Tjekker hvorvidt brugernavn (uid), fornavn og password er tomt. Hvis den ikke er tom, vises en boks med bekræftelse på at brugeren er oprettet
     if(!empty($uid && $firstname && $password)){
       add_user($uid, $firstname, $lastname, $password);
       echo <<<END
@@ -54,6 +56,7 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
 END;
 
 } else if ($_POST['isSubmitted']){
+  // Viser en advarselsboks om at brugeren ikke er oprettet
       echo <<<END
        <div class="alert alert-danger" role="alert">
        Du er ikke oprettet som bruger, måsker du mangler brugernavn, fornavn eller adgangskode?
@@ -61,74 +64,43 @@ END;
 END;
     }
 
-     ?>
-
-
-
+?>
 
     <div class="container mt-5"> <!-- MB bestemmer margin top -->
       <div class="row">
 
         <div class="col-md-6"> <!-- Bestemmer hvor containeren skal slutte. Slutter 6 ud af 12 -->
 
+            <!-- Formen indenholder sign up -->
               <form  action="" method="post">
                 <h2> Opret bruger </h2>
           <div class="mb-3"> <!-- MB bestemmer margin bund -->
             <label for="uid" class="form-label"> <b> Brugernavn </b></label>
-            <input type="text" name="uid"class="form-control" placeholder="Indtast brugernavn"  >
+            <input type="text" name="uid"class="form-control" placeholder="Indtast brugernavn">
           </div>
           <div class="mb-3"> <!-- MB bestemmer margin bund -->
             <label for="fornavn" class="form-label"> <b> Fornavn </b></label>
-            <input type="text" name="fornavn"class="form-control" placeholder="Indtast fornavn"  >
+            <input type="text" name="fornavn"class="form-control" placeholder="Indtast fornavn">
           </div>
           <div class="mb-3"> <!-- MB bestemmer margin bund -->
             <label for="efternavn" class="form-label"> <b> Efternavn </b></label>
-            <input type="text" name="efternavn"class="form-control" placeholder="Indtast brugernavn"  >
+            <input type="text" name="efternavn"class="form-control" placeholder="Indtast brugernavn">
           </div>
           <div class="mb-3 ">
               <label for="password" class="form-label"> <b> Adgangskode </b></label>
               <input type="password" class="form-control"name="password" placeholder="Indtast adgangskode">
           </div>
-
+          <!-- isSubmitted bruges til alert boks. -->
           <input type="hidden" name="isSubmitted" value="True">
-
           <div class="mb-3">
-              <button type="submit" name="submit" class="btn btn-primary">Opret dig</button>
+              <button type="submit" name="submit" class="btn btn-primary">Opret dig
+              </button>
             </form>
           </div>
-
-
         </div>
       </div>
 
 </div>
-
-
-<!--
-
-    <div class="container mt-5"> <!-- MB bestemmer margin top -->
-    <!--  <div class="row">
-
-<form  action="" method="post">
-  <label for="uid"><b> Brugernavn: </b></label>
-  <br>
-  <input type="text" name="uid">
-  <br>
-  <label for="fornavn"><b>Fornavn: </b></label>
-  <br>
-  <input type="text" name="fornavn" >
-  <br>
-  <label for="efternavn"><b>Efternavn: </b></label>
-  <br>
-  <input type="text" name="efternavn">
-  <br>
-  <label for="password"> <b> Adgangskode: </b></label>
-  <br>
-  <input type="password" name="password" >
-  <br>
-  <input type="submit" name="submit">
-
-</form> -->
 
 
 
