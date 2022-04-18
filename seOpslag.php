@@ -131,12 +131,12 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
     echo  "<b>", $getComments['uid'],"</b>",": ", $getComments['content'],"<br>" ,$getComments['date'], "<br>";
 
 //Hvis $user er ens med indlæggets bruger eller bruger er ens med kommentarens forfatter så skal man kunne slette kommentar
-  if($user==$getPost['uid'] || $user==$getComments['uid']){
-    echo "<a class='link' href='sletKommentar.php?id=".$cid."'>";
-    echo "<button type='submit' class='btn btn-secondary' style='margin-top: 5px;'>Slet";
-    echo "</button>";
-    echo "</a>";
-    echo "<br>";
+    if($user==$getPost['uid'] || $user==$getComments['uid']){
+      echo "<a class='link' href='sletKommentar.php?id=".$cid."'>";
+      echo "<button type='submit' class='btn btn-secondary' style='margin-top: 5px;'>Slet";
+      echo "</button>";
+      echo "</a>";
+      echo "<br>";
   }
   echo "<br>";
 }
