@@ -131,12 +131,12 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
     echo  "<b>", $getComments['uid'],"</b>",": ", $getComments['content'],"<br>" ,$getComments['date'], "<br>";
 
 //Hvis $user er ens med indlæggets bruger eller bruger er ens med kommentarens forfatter så skal man kunne slette kommentar
-    if($user==$getPost['uid'] || $user==$getComments['uid']){
-      echo "<a class='link' href='sletKommentar.php?id=".$cid."'>";
-      echo "<button type='submit' class='btn btn-secondary' style='margin-top: 5px;'>Slet";
-      echo "</button>";
-      echo "</a>";
-      echo "<br>";
+  if($user==$getPost['uid'] || $user==$getComments['uid']){
+    echo "<a class='link' href='sletKommentar.php?id=".$cid."'>";
+    echo "<button type='submit' class='btn btn-secondary' style='margin-top: 5px;'>Slet";
+    echo "</button>";
+    echo "</a>";
+    echo "<br>";
   }
   echo "<br>";
 }
@@ -149,7 +149,6 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
 <div class="mb-3">
 <?php
 
-  //
 if (!empty($_SESSION['user'])){
   //Vigtige variabler - Henter indholdet fra formen (kommentar)
         $komIndhold = $_POST['komIndhold'];
@@ -170,13 +169,6 @@ if (!empty($_SESSION['user'])){
 //Tilføjer kommentar
      add_comment($komUid, $komPid, $komIndhold);
 
-//Hvis bruger som er logget ind og indlæggets forfatter er ens skal det være muligt at redigere oplægget
-     if($user==$getPost['uid']){
-       echo "<a class='link' href='redigerOpslag.php?id=".$getPost['pid']."'>";
-       echo "<button type='submit' class='btn btn-primary' style='margin-top: 5px;'>Rediger dit opslag";
-       echo "</button>";
-       echo "</a>";
-     }
 //Ellers vises oplysende tekst
 } else {
       echo "<div class='card'>";
@@ -185,6 +177,18 @@ if (!empty($_SESSION['user'])){
       echo "</div>";
       echo "</div>";
       }
+
+      //Hvis bruger som er logget ind og indlæggets forfatter er ens skal det være muligt at redigere oplægget
+
+
+if($user == $getPost['uid']){
+  echo "<a class='link' href='redigerOpslag.php?id=".$getPost['pid']."'>";
+  echo "<button type='submit' class='btn btn-primary' style='margin-top: 5px;'>Rediger dit opslag";
+  echo "</button>";
+  echo "</a>";
+}
+
+
 ?>
 
     </div>

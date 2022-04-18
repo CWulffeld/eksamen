@@ -24,6 +24,7 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
   <!-- Hvis $_Session bruger er tom, skal man sendes tilbage til login siden -->
 
 <?php
+
     if (empty($_SESSION['user']))
     {
       header('Location:login.php');
