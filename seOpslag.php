@@ -133,7 +133,7 @@ Lavet af: Laura Sofie Juel Nielsen (LSJN) & Christine Wulffeld (CVANW)
 //Hvis $user er ens med indlæggets bruger eller bruger er ens med kommentarens forfatter så skal man kunne slette kommentar
   if($user==$getPost['uid'] || $user==$getComments['uid']){
     echo "<a class='link' href='sletKommentar.php?id=".$cid."'>";
-    echo "<button type='submit' class='btn btn-secondary' style='margin-top: 5px;'>Slet";
+    echo "<button type='submit' class='btn btn-secondary' style='margin-top: 5px;'>Slet";  //Anvender in-line CSS, ved at style button. Margin-top skal have 5px
     echo "</button>";
     echo "</a>";
     echo "<br>";
